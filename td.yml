@@ -10,4 +10,4 @@ spring:
         default_schema: "${spring.flyway.schemas}"
         jdbc.lob.non_contextual_creation: true # fixes clob creation exception
   flyway:
-    schemas: todarhcschemas
+    schemas: todarch_td
