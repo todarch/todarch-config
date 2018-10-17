@@ -11,3 +11,5 @@ spring:
         jdbc.lob.non_contextual_creation: true # fixes clob creation exception
   flyway:
     schemas: todarch_td
+
+todarch.healtcheck.endpoints.enabled: true
