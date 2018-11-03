@@ -1,15 +1,36 @@
 spring:
-  kafka:
-    bootstrap-servers: velomobile-01.srvs.cloudkafka.com:9094, velomobile-02.srvs.cloudkafka.com:9094, velomobile-03.srvs.cloudkafka.com:9094
+  application:
+    name: cm
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: emails
+          # without group, it works like broadcasting pattern
+          # group says one message will be consumed by one consumer like worker pattern
+          # works in round-robbin, work stealing
+          group: email.registration
+          # even if none of the consumers are up when the message send to broker
+          # when any of the consumers is up and running, it will start to receive messages
+          durableSubscription: true
+  rabbitmq:
+    host: "${RABBITMQ_HOST}"
+    port: "${RABBITMQ_PORT}"
+    username: "${RABBITMQ_USERNAME}"
+    password: "${RABBITMQ_PASSWORD}"
+  mail:
+    host: smtp.zoho.eu
+    port: 465 # 587 tls, 465 ssl
+    username: noreply@todarch.com
+    password: "${TODARCH_MAIL_PASSWORD}"
+    protocol: smtp
     properties:
-      security.protocol: SASL_SSL
-      sasl:
-        mechanism: SCRAM-SHA-256
-        jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="${CLOUDKARAFKA_USERNAME}" password="${CLOUDKARAFKA_PASSWORD}";
-    consumer:
-      client-id: consumer-cm
-      group-id: cm-id
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      auto-offset-reset: latest
-      properties:
-        spring.json.trusted.packages: "*"
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          auth: true
+          starttls.enable: true
+          ssl.enable: true
+          ssl.trust: smtp.zoho.eu
