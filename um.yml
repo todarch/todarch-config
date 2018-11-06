@@ -13,3 +13,15 @@ spring:
         jdbc.lob.non_contextual_creation: true # fixes clob creation exception
   flyway:
     schemas: todarch_um
+  rabbitmq:
+    host: "${RABBITMQ_HOST}"
+    port: "${RABBITMQ_PORT}"
+    username: "${RABBITMQ_USERNAME}"
+    password: "${RABBITMQ_PASSWORD}"
+  cloud:
+    stream:
+      bindings: # use lower case binding names, contract verifier looks for lower-cased bean name
+        emailbinding: # @Output("emailbinding")
+          destination: emails # exchange name, no usage in code
+
+todarch.healtcheck.endpoints.enabled: true
